@@ -1,51 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HeadFirstDesignPatterns.ObserverPattern;
 
 namespace HeadFirstDesignPatterns.Chapter2
 {
-    public class WeatherData : ISubject
+    public class WeatherData : IObservable<WeatherProperties>, IDisposable
     {
-        public List<IObserver> observers;
-        private float Temperature { get; set; }
-        private float Humidity { get; set; }
-        private float Pressure { get; set; }
+        private readonly HashSet<IObserver<WeatherProperties>> observers;
+        private WeatherProperties WeatherProperties { get; set; }
 
         public WeatherData()
         {
-            observers = new List<IObserver>();
+            observers = new HashSet<IObserver<WeatherProperties>>();
+            WeatherProperties = new WeatherProperties();
         }
 
         public void NotifyObserver()
         {
-            foreach (var obs in observers)
+            foreach (var item in observers)
             {
-                obs.update(Temperature, Humidity, Pressure);
-            }
-        }
-
-        public void RegisterObserver(IObserver o)
-        {
-            observers.Add(o);
-        }
-
-        public void RemoveObserver(IObserver o)
-        {
-            if (observers.Contains(o))
-            {
-                observers.Remove(o);
+                item.OnNext(WeatherProperties);
             }
         }
 
         public void SetMeasurements(float temp, float humudity, float pressure)
         {
-            this.Temperature = temp;
-            this.Humidity = humudity;
-            this.Pressure = pressure;
+            WeatherProperties.Temperature = temp;
+            WeatherProperties.Humidity = humudity;
+            WeatherProperties.Pressure = pressure;
 
             NotifyObserver();
+        }
+
+        public IDisposable Subscribe(IObserver<WeatherProperties> observer)
+        {
+            observers.Add(observer);
+            return this;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

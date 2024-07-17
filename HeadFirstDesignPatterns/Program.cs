@@ -15,7 +15,8 @@ class Program
 
         //Chapter 2
         var pub = new WeatherData();
-        var sub1 = new StatisticsDisplay(pub);
+        var sub1 = new StatisticsDisplay();
+        sub1.Subscribe(pub);
         pub.SetMeasurements(40, 50, 39);
     }
 }

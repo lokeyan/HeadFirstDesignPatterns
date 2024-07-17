@@ -1,17 +1,21 @@
-﻿namespace HeadFirstDesignPatterns.Chapter2.DisplayElements
+﻿using HeadFirstDesignPatterns.ObserverPattern;
+
+namespace HeadFirstDesignPatterns.Chapter2.DisplayElements
 {
-    public class StatisticsDisplay : IObserver, IDisplayElement
+    public class StatisticsDisplay : IObserver<WeatherProperties>
     {
         public float Temperature { get; set; }
         public float Humidity { get; set; }
         public float Pressure { get; set; }
 
-        public ISubject subject;
+        private IDisposable? _cancellation;
 
-        public StatisticsDisplay(ISubject s)
+        public virtual void Subscribe(WeatherData provider) =>
+            _cancellation = provider.Subscribe(this);
+
+        public virtual void Unsubscribe()
         {
-            subject = s;
-            subject.RegisterObserver(this);
+            _cancellation?.Dispose();
         }
 
         public void Display()
@@ -19,12 +23,22 @@
             Console.WriteLine($"StatisticsDisplay: \n Humidity: {Humidity} Temp: {Temperature} Pressure: {Pressure}");
         }
 
-        public void update(float temp, float humudity, float pressure)
+        public void OnNext(WeatherProperties prop) 
         {
-            this.Humidity = humudity;
-            this.Pressure = pressure;
-            this.Temperature = temp;
+            this.Humidity = prop.Humidity;
+            this.Pressure = prop.Pressure;
+            this.Temperature = prop.Temperature;
             Display();
+        }
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
         }
     }
 }
