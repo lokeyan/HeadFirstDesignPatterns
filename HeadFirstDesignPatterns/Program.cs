@@ -16,9 +16,6 @@ class Program
         //Chapter 2
         var pub = new WeatherData();
         var sub1 = new StatisticsDisplay(pub);
-        pub.Temperature = 10;
-        pub.Humidity = 40;
-        pub.Pressure = 50;
-        pub.NotifyObserver();
+        pub.SetMeasurements(40, 50, 39);
     }
 }

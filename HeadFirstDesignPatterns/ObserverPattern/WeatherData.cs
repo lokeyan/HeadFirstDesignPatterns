@@ -9,9 +9,9 @@ namespace HeadFirstDesignPatterns.Chapter2
     public class WeatherData : ISubject
     {
         public List<IObserver> observers;
-        public float Temperature { get; set; }
-        public float Humidity { get; set; }
-        public float Pressure { get; set; }
+        private float Temperature { get; set; }
+        private float Humidity { get; set; }
+        private float Pressure { get; set; }
 
         public WeatherData()
         {
@@ -37,6 +37,15 @@ namespace HeadFirstDesignPatterns.Chapter2
             {
                 observers.Remove(o);
             }
+        }
+
+        public void SetMeasurements(float temp, float humudity, float pressure)
+        {
+            this.Temperature = temp;
+            this.Humidity = humudity;
+            this.Pressure = pressure;
+
+            NotifyObserver();
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HeadFirstDesignPatterns.Chapter2.DisplayElements
+﻿namespace HeadFirstDesignPatterns.Chapter2.DisplayElements
 {
     public class StatisticsDisplay : IObserver, IDisplayElement
     {
@@ -14,7 +8,7 @@ namespace HeadFirstDesignPatterns.Chapter2.DisplayElements
 
         public ISubject subject;
 
-        public StatisticsDisplay(ISubject s) 
+        public StatisticsDisplay(ISubject s)
         {
             subject = s;
             subject.RegisterObserver(this);
